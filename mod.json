@@ -1,0 +1,23 @@
+{
+	"_QPVersion": "0.1.1",
+	"name": "Ponder",
+	"id": "Ponder",
+	"author": "Inferno._.",
+	"version": "0.5.4",
+	"packageId": "com.beatgames.beatsaber",
+	"packageVersion": "1.24.0",
+	"description": "Ponder if you dare",
+	"dependencies": [],
+	"modFiles": [
+		"libPonder.so"
+	],
+	"libraryFiles": [
+		"libbeatsaber-hook_3_9_0.so"
+	],
+	"fileCopies": [
+		{
+			"name": "orbofpondering.bundle",
+			"destination": "/sdcard/ModData/com.beatgames.beatsaber/Mods/Ponder/orbofpondering.bundle"
+		}
+	]
+}
