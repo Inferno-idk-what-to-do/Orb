@@ -5,8 +5,9 @@
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/PrimitiveType.hpp"
 #include "UnityEngine/Transform.hpp"
-#include "UnityEngine/AssetBundleRequest.hpp"
+#include "UnityEngine/AssetBundle.hpp"
 #include "UnityEngine/AssetBundleCreateRequest.hpp"
+#include "UnityEngine/AssetBundleRequest.hpp"
 
 #include "questui/shared/QuestUI.hpp"
 
@@ -14,7 +15,6 @@
 #include "config.hpp"
 #include "SettingsViewController.hpp"
 #include "assets.hpp"
-#include "assetManager.hpp"
 
 using namespace GlobalNamespace;
 using namespace UnityEngine;
@@ -85,19 +85,36 @@ MAKE_HOOK_MATCH(VRCUpdateHook, &VRController::Update, void, VRController *self)
 
 custom_types::Helpers::Coroutine LoadOrbBundle()
 {
-    ArrayW<uint8_t> bytes(orbofpondering_bundle::getLength());
-    std::copy(orbofpondering_bundle::getData(), orbofpondering_bundle::getData() + orbofpondering_bundle::getLength(), bytes.begin());
-
+    getLogger().info("line 88");
     using AssetBundle_LoadFromMemoryAsync = function_ptr_t<UnityEngine::AssetBundleCreateRequest*, ArrayW<uint8_t>, int>;
-    static auto assetBundle_LoadFromMemoryAsync = reinterpret_cast<AssetBundle_LoadFromMemoryAsync>(il2cpp_functions::resolve_icall("UnityEngine.AssetBundle::LoadFromMemoryAsync_Internal"));
+    static AssetBundle_LoadFromMemoryAsync assetBundle_LoadFromMemoryAsync = reinterpret_cast<AssetBundle_LoadFromMemoryAsync>(il2cpp_functions::resolve_icall("UnityEngine.AssetBundle::LoadFromMemoryAsync_Internal"));
 
-    auto req = assetBundle_LoadFromMemoryAsync(bytes, 0);
-    req->set_allowSceneActivation(true);
-    co_yield reinterpret_cast<System::Collections::IEnumerator*>(req);
+    getLogger().info("line 92");
+    auto bundleReq = assetBundle_LoadFromMemoryAsync(IncludedAssets::orbofpondering, 0);
+    getLogger().info("line 94");
+    bundleReq->set_allowSceneActivation(true);
 
-    auto bundle = req->get_assetBundle();
-    auto *orbPrefab = bundle->LoadAsset<GameObject *>("OrbOfPondering");
-    auto orb = Object::Instantiate(orbPrefab);
+    getLogger().info("line 97");
+    auto bundle = bundleReq->get_assetBundle();
+    getLogger().info("line 99");
+    Object::DontDestroyOnLoad(bundle);
+
+    getLogger().info("line 102");
+    auto assetReq = bundle->LoadAssetAsync("orbofpondering", reinterpret_cast<System::Type*>(csTypeOf(GameObject*)));
+    getLogger().info("line 104");
+    assetReq->set_allowSceneActivation(true);
+
+    getLogger().info("line 107");
+    auto asset = reinterpret_cast<GameObject*>(assetReq->get_asset());
+    getLogger().info("line 109");
+    auto orb = Object::Instantiate(asset);
+    getLogger().info("line 111");
+    Object::DontDestroyOnLoad(orb);
+    getLogger().info("line 113");
+    orb->SetActive(true);
+    getLogger().info("line 115");
+
+    co_return;
 }
 
 MAKE_HOOK_MATCH(SignHook, &FlickeringNeonSign::Start, void, FlickeringNeonSign *self)
@@ -111,11 +128,9 @@ MAKE_HOOK_MATCH(SignHook, &FlickeringNeonSign::Start, void, FlickeringNeonSign *
     size.z *= getModConfig().size.GetValue();
     sphere->get_transform()->set_localScale(size);
 
-    // Material *mat = Material::New_ctor(SHADER_PATH);
-    // mat->set_mainTexture(tex);
-    // sphere->GetComponent<Renderer*>()->set_material(mat);
-
+    getLogger().info("Starting load bundle");
     self->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(LoadOrbBundle()));
+    getLogger().info("Bundle loaded");
 
     offset = getModConfig().offset.GetValue();
 }
