@@ -40,14 +40,14 @@ bool isLeftSaber = true;
 
 Vector3 leftPos, rightPos, avg, offset;
 
-GameObject *sphere = nullptr;
+GameObject *orb = nullptr;
 auto size = Vector3(.2f, .2f, .2f);
 
 MAKE_HOOK_MATCH(VRCUpdateHook, &VRController::Update, void, VRController *self)
 {
     VRCUpdateHook(self);
 
-    if(sphere)
+    if(orb)
     {
         if(isLeftSaber) 
         {
@@ -59,22 +59,22 @@ MAKE_HOOK_MATCH(VRCUpdateHook, &VRController::Update, void, VRController *self)
         }
 
         avg = Vector3(((leftPos.x + rightPos.x) / 2 + offset.x), ((leftPos.y + rightPos.y) / 2 + offset.y), ((leftPos.z + rightPos.z) / 2 + offset.z));
-        sphere->get_transform()->set_position(avg);
+        orb->get_transform()->set_position(avg);
 
         // ! update config stuff
         // enabled
-        if(sphere->get_active() != getModConfig().enabled.GetValue())
+        if(orb->get_active() != getModConfig().enabled.GetValue())
         {
-            sphere->set_active(getModConfig().enabled.GetValue());
+            orb->set_active(getModConfig().enabled.GetValue());
         }
         // size
-        if(sphere->get_transform()->get_localScale().x != getModConfig().size.GetValue() * .2f)
+        if(orb->get_transform()->get_localScale().x != getModConfig().size.GetValue() * .2f)
         {
             size.x = .2f * getModConfig().size.GetValue();
             size.y = .2f * getModConfig().size.GetValue();
             size.z = .2f * getModConfig().size.GetValue();
 
-            sphere->get_transform()->set_localScale(size);
+            orb->get_transform()->set_localScale(size);
         }
         // offset
         offset = getModConfig().offset.GetValue();
@@ -90,26 +90,22 @@ custom_types::Helpers::Coroutine LoadOrbBundle()
     static AssetBundle_LoadFromMemoryAsync assetBundle_LoadFromMemoryAsync = reinterpret_cast<AssetBundle_LoadFromMemoryAsync>(il2cpp_functions::resolve_icall("UnityEngine.AssetBundle::LoadFromMemoryAsync_Internal"));
 
     getLogger().info("line 92");
-    auto bundleReq = assetBundle_LoadFromMemoryAsync(IncludedAssets::orbofpondering, 0);
+    auto bundleReq = assetBundle_LoadFromMemoryAsync(IncludedAssets::gayfrog_bundle, 0);
     getLogger().info("line 94");
     bundleReq->set_allowSceneActivation(true);
 
     getLogger().info("line 97");
     auto bundle = bundleReq->get_assetBundle();
-    getLogger().info("line 99");
-    Object::DontDestroyOnLoad(bundle);
 
     getLogger().info("line 102");
-    auto assetReq = bundle->LoadAssetAsync("orbofpondering", reinterpret_cast<System::Type*>(csTypeOf(GameObject*)));
+    auto assetReq = bundle->LoadAssetAsync("GayFrog", reinterpret_cast<System::Type*>(csTypeOf(GameObject*)));
     getLogger().info("line 104");
     assetReq->set_allowSceneActivation(true);
 
     getLogger().info("line 107");
     auto asset = reinterpret_cast<GameObject*>(assetReq->get_asset());
     getLogger().info("line 109");
-    auto orb = Object::Instantiate(asset);
-    getLogger().info("line 111");
-    Object::DontDestroyOnLoad(orb);
+    orb = Object::Instantiate(asset);
     getLogger().info("line 113");
     orb->SetActive(true);
     getLogger().info("line 115");
@@ -121,12 +117,12 @@ MAKE_HOOK_MATCH(SignHook, &FlickeringNeonSign::Start, void, FlickeringNeonSign *
 {
     SignHook(self);
 
-    sphere = GameObject::CreatePrimitive(PrimitiveType::Sphere);
+    orb = GameObject::CreatePrimitive(PrimitiveType::Sphere);
 
     size.x *= getModConfig().size.GetValue();
     size.y *= getModConfig().size.GetValue();
     size.z *= getModConfig().size.GetValue();
-    sphere->get_transform()->set_localScale(size);
+    orb->get_transform()->set_localScale(size);
 
     getLogger().info("Starting load bundle");
     self->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(LoadOrbBundle()));
