@@ -16,8 +16,8 @@
 	],
 	"fileCopies": [
 		{
-			"name": "orbofpondering",
-			"destination": "/sdcard/ModData/com.beatgames.beatsaber/Mods/Ponder/orbofpondering"
+			"name": "orbofpondering.bundle",
+			"destination": "/sdcard/ModData/com.beatgames.beatsaber/Mods/Ponder/orbofpondering.bundle"
 		},
 		{
 			"name": "gayfrog.bundle",

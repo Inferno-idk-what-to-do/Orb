@@ -90,17 +90,15 @@ custom_types::Helpers::Coroutine LoadOrbBundle()
     static AssetBundle_LoadFromMemoryAsync assetBundle_LoadFromMemoryAsync = reinterpret_cast<AssetBundle_LoadFromMemoryAsync>(il2cpp_functions::resolve_icall("UnityEngine.AssetBundle::LoadFromMemoryAsync_Internal"));
 
     getLogger().info("line 92");
-    auto bundleReq = assetBundle_LoadFromMemoryAsync(IncludedAssets::orbofpondering, 0);
-    getLogger().info("line 94");
-    bundleReq->set_allowSceneActivation(true);
+    auto bundleReq = assetBundle_LoadFromMemoryAsync(IncludedAssets::orbofpondering_bundle, 0);
+
+    co_yield reinterpret_cast<System::Collections::IEnumerator*>(bundleReq);
 
     getLogger().info("line 97");
     auto bundle = bundleReq->get_assetBundle();
 
     getLogger().info("line 102");
     auto assetReq = bundle->LoadAssetAsync("OrbOfPondering", reinterpret_cast<System::Type*>(csTypeOf(GameObject*)));
-    getLogger().info("line 104");
-    assetReq->set_allowSceneActivation(true);
 
     getLogger().info("line 107");
     auto asset = reinterpret_cast<GameObject*>(assetReq->get_asset());

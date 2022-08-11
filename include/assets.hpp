@@ -32,6 +32,6 @@ struct IncludedAsset {
 namespace IncludedAssets {
 
 	DECLARE_FILE(gayfrog_bundle)
-	DECLARE_FILE(orbofpondering)
+	DECLARE_FILE(orbofpondering_bundle)
 
 }
