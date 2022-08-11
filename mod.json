@@ -3,7 +3,7 @@
 	"name": "Ponder",
 	"id": "Ponder",
 	"author": "Inferno._.",
-	"version": "0.5.4",
+	"version": "0.6.2",
 	"packageId": "com.beatgames.beatsaber",
 	"packageVersion": "1.24.0",
 	"description": "Ponder if you dare",
@@ -16,8 +16,12 @@
 	],
 	"fileCopies": [
 		{
-			"name": "orbofpondering.bundle",
-			"destination": "/sdcard/ModData/com.beatgames.beatsaber/Mods/Ponder/orbofpondering.bundle"
+			"name": "orbofpondering",
+			"destination": "/sdcard/ModData/com.beatgames.beatsaber/Mods/Ponder/orbofpondering"
+		},
+		{
+			"name": "gayfrog.bundle",
+			"destination": "/sdcard/ModData/com.beatgames.beatsaber/Mods/Ponder/gayfrog.bundle"
 		}
 	]
 }

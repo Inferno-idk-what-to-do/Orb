@@ -4,7 +4,7 @@
   "info": {
     "name": "Ponder",
     "id": "Ponder",
-    "version": "0.5.4",
+    "version": "0.6.2",
     "url": null,
     "additionalData": {
       "overrideSoName": "libPonder.so"

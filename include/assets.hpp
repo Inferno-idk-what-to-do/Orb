@@ -31,6 +31,7 @@ struct IncludedAsset {
     const IncludedAsset name { _binary_##name##_start, _binary_##name##_end};
 namespace IncludedAssets {
 
-	DECLARE_FILE(orbofpondering_bundle)
+	DECLARE_FILE(gayfrog_bundle)
+	DECLARE_FILE(orbofpondering)
 
 }
